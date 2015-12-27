@@ -1,11 +1,4 @@
 'use strict';
-/**
- *  This file contains the variables used in other gulp files
- *  which defines tasks
- *  By design, we only put there very generic config values
- *  which are used in several places to keep good readability
- *  of the tasks
- */
 
 var gutil = require('gulp-util');
 
@@ -35,9 +28,9 @@ exports.markup = markup;
  * Path watchers files
  */
 var mvc = {
-    model: markup.model + '/**/*.js',
+    model: markup.model + '/*.js',
     views: markup.view + '/**/*.twig',
-    ctrls: markup.ctrl + '/**/*.js',
+    ctrls: markup.ctrl + '/*.js',
     task: 'compile:twig'
 };
 exports.markup = mvc;
