@@ -1,24 +1,27 @@
 {
-  "name": "alex",
+  "name": "markus",
   "version": "0.1.0",
   "authors": [
     "fafnur <fafnur@yandex.ru>"
   ],
-  "description": "Default",
+  "description": "Markus",
   "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
+    "bower_components",
     "web",
     "markup/static/components",
     "test",
-    "tests"
+    "tests",
+    ".idea",
+    "web/build",
+    "web/components"
   ],
   "dependencies": {
     "bootstrap": "~3.3.5",
     "font-awesome": "fontawesome#~4.4.0",
-    "jquery": "~2.1.4",
-    "markup-templates": "~0.1.0"
+    "jquery": "~2.1.4"
   }
 }
