@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     conf = require('../config');
 
 var $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*', 'sourcemaps', 'browser-sync']
+    pattern: ['gulp-*', 'sourcemaps', 'browser-sync','notify']
 });
 
 gulp.task(conf.preCSS.task, function () {

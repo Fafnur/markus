@@ -2,6 +2,8 @@
 
 var gutil = require('gulp-util');
 
+exports.root = process.env.INIT_CWD;
+
 /**
  * Root folder web-app
  */
@@ -18,9 +20,9 @@ exports.htdocs = htdocs;
  */
 var markup = {
     root:  'markup',
-    model: 'markup/models',
-    view:  'markup/views',
-    ctrl:  'markup/contollers'
+    models: 'markup/models',
+    views:  'markup/views',
+    ctrls:  'markup/controllers'
 };
 exports.markup = markup;
 
@@ -28,12 +30,12 @@ exports.markup = markup;
  * Path watchers files
  */
 var mvc = {
-    model: markup.model + '/*.js',
-    views: markup.view + '/**/*.twig',
-    ctrls: markup.ctrl + '/*.js',
+    models: markup.models + '/*.js',
+    views: markup.views + '/**/*.twig',
+    ctrls: markup.ctrls + '/*.js',
     task: 'compile:twig'
 };
-exports.markup = mvc;
+exports.mvc = mvc;
 
 /**
  * Options for Swig.js compiler
@@ -41,7 +43,6 @@ exports.markup = mvc;
 var swig = {
     usePostfix: true,
     useLodader: true,
-    src: mvc.views
 };
 exports.swig  = swig;
 

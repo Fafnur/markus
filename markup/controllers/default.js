@@ -1,7 +1,7 @@
-module.exports.default = [
-    {
+exports.default = {
+    index: {
         name: 'index',
         template: 'default/index.html.twig',
         models: ['Person']
     }
-];
+};
