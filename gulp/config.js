@@ -43,6 +43,7 @@ exports.mvc = mvc;
 var swig = {
     usePostfix: true,
     useLodader: true,
+    useGlobalData: true
 };
 exports.swig  = swig;
 

@@ -50,6 +50,10 @@ gulp.task(conf.mvc.task, ['ctls:all', 'models:all'], function() {
         }
     }
 
+    function getData() {
+
+        return null;
+    }
     return gulp.src(paths)
         .pipe($.plumber({
             errorHandler: function (error) {
@@ -58,11 +62,26 @@ gulp.task(conf.mvc.task, ['ctls:all', 'models:all'], function() {
                 });
             }
         }))
+        //.pipe($.foreach(function (stream, file) {
+        //        var jsonFile = file;
+        //        var jsonBasename = path.basename(jsonFile.path, path.extname(jsonFile.path));
+        //        var models =  data[getLocalPath(jsonFile.path)];
+        //        var modelsData = {};
+        //
+        //        for (var i = 0; i < models.length; i++) {
+        //            modelsData[path.basename(models[i])] = require(conf.root + path.sep + conf.markup.models.replace('\/',path.sep) + path.sep + models[i]) ;
+        //        }
+        //        console.log(modelsData);
+        //        return gulp.src(models)
+        //            .pipe($.debug())
+        //            ;
+        //    })
+        //)
         .pipe($.swig({
             defaults: {
                 loader: loader(),
                 cache: false,
-               // locals: $.requireWithoutCache('e:\\domains\\markus\\markup\\models\\all.js', require)
+                locals: $.requireWithoutCache(conf.root + '/' + conf.markup.models + '/all.js', require)
             }
         }))
         .on('error', $.notify.onError(function (error) {

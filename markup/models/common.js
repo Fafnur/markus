@@ -13,5 +13,9 @@ module.exports.mainMenu = {
     item3: {
         title: 'Contacts',
         path:  '#contacts'
+    },
+    item4: {
+        title: 'Contacts',
+        path:  '#contacts'
     }
 };
