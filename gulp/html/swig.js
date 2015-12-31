@@ -47,6 +47,7 @@ gulp.task(conf.mvc.task, [ 'clean', 'models:all'], function() {
     var getLocalPath = function(src){
         return src.replace(conf.root + path.sep + conf.markup.views.replace('\/',path.sep) + path.sep,'')
     };
+    console.log(conf.mvc.ctrls);
     return gulp.src(conf.mvc.ctrls)
         .pipe($.plumber({
             errorHandler: function (error) {
@@ -56,43 +57,38 @@ gulp.task(conf.mvc.task, [ 'clean', 'models:all'], function() {
             }
         }))
         .pipe($.foreach(function (stream, file) {
-                var jsonFile = file;
-                var jsonBasename = path.basename(jsonFile.path, path.extname(jsonFile.path));
-                var ctrls  = require(jsonFile.path);
+            var jsonFile = file;
+            var jsonBasename = path.basename(jsonFile.path, path.extname(jsonFile.path));
+            var ctrls = require(jsonFile.path);
 
-                var paths = [], data = [];
-                for (var ctrl in ctrls) {
-                    if (ctrls.hasOwnProperty(ctrl)) {
-                        for (var action in ctrls[ctrl]) {
-
-                            paths.push(conf.root + '/' + conf.markup.views + '/' + ctrls[ctrl][action].template);
-                            ////data[ctrls[ctrl][action].template] = action;
-
-                        }
-                    }
+            var paths = [], data = [];
+            for (var ctrl in ctrls) {
+                for (var action in ctrls[ctrl]) {
+                    paths[action] = conf.root + '/' + conf.markup.views + '/' + ctrls[ctrl][action].template;
+                    //data[ctrls[ctrl][action].template] = action;
                 }
+            }
 
-                return gulp.src(paths)
-                    .pipe($.foreach(function (stream, file) {
-
-                        //console.log(currentAction.path);
-                        return gulp.src(file.path)
-                            .pipe($.swig({
-                                defaults: {
-                                    loader: loader(),
-                                    cache: false,
-                                    locals: $.requireWithoutCache(conf.root + '/' + conf.markup.models + '/all.js', require)
-                                }
-                            }))
-                            .pipe($.rename(function (path) {
-                                path.basename = path.basename.replace(/\..+$/, '');
-                            }))
-                            .pipe(gulp.dest(conf.htdocs.root));
-                    }));
-            })
-        )
+            console.log(paths);
+            return gulp.src(paths)
+                .pipe($.foreach(function (stream, file) {
+                    return gulp.src(file.path)
+                        .pipe($.swig({
+                            defaults: {
+                                loader: loader(),
+                                cache: false,
+                                locals: $.requireWithoutCache(conf.root + '/' + conf.markup.models + '/all.js', require)
+                            }
+                        }))
+                        .pipe($.rename(function (path) {
+                            path.basename = path.basename.replace(/\..+$/, '');
+                        }))
+                        .pipe(gulp.dest(conf.htdocs.root));
+                }));
+        }))
         .on('error', $.notify.onError(function (error) {
             return '\nError! Look in the console for details.\n' + error;
         }))
-        .pipe($.browserSync.reload({stream:true}));
+        //.pipe($.browserSync.reload({stream:true}))
+        ;
 });
