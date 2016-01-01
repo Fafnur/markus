@@ -1,7 +1,7 @@
 exports.default = {
     index: {
-        name: 'index',
+        alias: 'index',
         template: 'default/index.html.twig',
-        models: ['person']
+        models: []
     }
 };

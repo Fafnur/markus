@@ -3,4 +3,8 @@
 /bower_components/
 /web/build/
 /web/components/
+/web/less/tmp
+/web/css/template.css
+/web/css/styles.css
+/markup/models/all.js
 /parameters.yml

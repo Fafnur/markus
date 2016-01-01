@@ -12,12 +12,7 @@ module.exports = function loader(basepath, encoding) {
     encoding = encoding || 'utf8';
     basepath = (basepath) ? path.normalize(basepath) : null;
     var basedir = process.env.INIT_CWD;
-    var isWindows = /^win/.test(process.platform),
-        sep = '/';
-
-    if(isWindows) {
-        sep = '\\';
-    }
+    var isWindows = /^win/.test(process.platform);
 
     var root = process.env.INIT_CWD;
 
@@ -30,8 +25,8 @@ module.exports = function loader(basepath, encoding) {
         }
 
         // TODO:написать нормальное сравнение: match to process
-        if(to.split(sep).length <= 3) {
-            ret = root + sep + conf.markup.views + sep + to;
+        if(to.split(path.sep).length <= 3) {
+            ret = root + path.sep + conf.markup.views + path.sep + to;
         } else {
             ret = path.resolve(from, to);
         }

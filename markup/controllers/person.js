@@ -1,11 +1,11 @@
-exports.preson = {
+exports.person = {
     list: {
-        name: 'persons',
+        alias: 'persons',
         template: 'person/list.html.twig',
         models: ['person']
     },
     show: {
-        name: 'person-show',
+        alias: 'person-show',
         template: 'person/show.html.twig',
         models: ['person']
     }

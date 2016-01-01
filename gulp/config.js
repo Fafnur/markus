@@ -32,8 +32,7 @@ exports.markup = markup;
 var mvc = {
     models: markup.models + '/*.js',
     views: markup.views + '/**/*.twig',
-    ctrls: markup.ctrls + '/*.js',
-    task: 'compile:twig'
+    ctrls: markup.ctrls + '/*.js'
 };
 exports.mvc = mvc;
 
@@ -43,7 +42,7 @@ exports.mvc = mvc;
 var swig = {
     usePostfix: true,
     useLodader: true,
-    useGlobalData: true
+    useGlobalData: false
 };
 exports.swig  = swig;
 
@@ -66,8 +65,7 @@ var preCSS = {
     modules:      '/less/components/**/*.less',
     in:           'template.less',
     out:          'template.css',
-    isSourcemaps: false,
-    task:         'compile:less'
+    isSourcemaps: false
 };
 exports.preCSS = preCSS;
 
@@ -75,8 +73,7 @@ exports.preCSS = preCSS;
  * Custom system templates for web-app
  */
 exports.markupTemplates = [
-    htdocs + '/components/markup-templates/templates',
-    'E:\\domains\\layouts\\templates'
+    htdocs + '/components/markup-templates/templates'
 ];
 
 /**
