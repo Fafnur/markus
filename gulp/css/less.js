@@ -28,7 +28,7 @@ gulp.task('compile:less', function () {
         .pipe($.rename(conf.preCSS.out))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
         .pipe(gulp.dest(conf.htdocs.css))
-        //.pipe($.browserSync.reload({stream: true}))
+        .pipe($.browserSync.reload({stream: true}))
         ;
 });
 
