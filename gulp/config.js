@@ -65,6 +65,7 @@ var preCSS = {
     modules:      '/less/components/**/*.less',
     in:           'template.less',
     out:          'template.css',
+    outMin:       'template.min.css',
     isSourcemaps: false
 };
 exports.preCSS = preCSS;
