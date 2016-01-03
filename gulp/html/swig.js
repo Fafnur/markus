@@ -54,6 +54,13 @@ gulp.task('compile:generate-ctrl-map', function() {
                 name = Object.keys(obj)[0],
                 ctrl = obj[name];
 
+            function isActive(action) {
+                var ret = true;
+                if(action == false) {
+                    var ret = false;
+                }
+                return ret;
+            }
             for (var item in ctrl) {
                 if(ctrl.hasOwnProperty(item)) {
                     var action = ctrl[item];
@@ -63,7 +70,8 @@ gulp.task('compile:generate-ctrl-map', function() {
                         tpl: conf.markup.views + '/' + action.template,
                         action: item,
                         alias: action.alias,
-                        models: getModels(action.models)
+                        models: getModels(action.models),
+                        active: isActive(action.isActive)
                     };
                     ctrlsCount++;
                 }
@@ -88,6 +96,9 @@ gulp.task('compile:twig', function() {
     for(var key in ctrlsMap) {
         if(ctrlsMap.hasOwnProperty(key)) {
             var ctrl = ctrlsMap[key];
+            if(!ctrl.active) {
+                continue;
+            }
             // TODO: тут должна быть синхронная загрузка и компиляция шаблона
             //if(!conf.swig.useGlobalData) {
             //    //data = ctrl.ctrl + '_' + ctrl.action + '_all.js';
@@ -130,7 +141,7 @@ gulp.task('compile:twig', function() {
             ;
         }
     }
-    // TODO: Добавить browserSync.reload - gulp.src(..).pipe($.browserSync.reload({stream:true}));
+    $.browserSync.reload({stream:true});
 });
 
 gulp.task('compile:build:twig', ['compile:clean:html', 'compile:models:all','compile:generate-ctrl-map'], function() {

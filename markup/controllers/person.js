@@ -7,6 +7,7 @@ exports.person = {
     show: {
         alias: 'person-show',
         template: 'person/show.html.twig',
-        models: ['person']
+        models: ['person'],
+        isActive: false
     }
 };
