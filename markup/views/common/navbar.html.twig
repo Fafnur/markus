@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav pull-right">
                 {% for menuItem in mainMenu %}
                     <li class="{% if loop.first %}active{% endif %}">
-                        <a href="{{ menuItem.path }}">{{ menuItem.title }}</a>
+                        <a href="{{ path(menuItem.route) }}">{{ menuItem.title }}</a>
                     </li>
                 {% endfor %}
             </ul>

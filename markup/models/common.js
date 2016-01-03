@@ -1,21 +1,29 @@
 module.exports.asset = function (param) { return '/' + param; };
-module.exports.path  = function (param) { return param + '.html'; };
+module.exports.path  = function (param) {
+    //for(var ctrl in ctlsMap) {
+    //    var route = ctrl.ctrl + '_' + ctrl.alias;
+    //    if(route == param) {
+    //        return ctrl.alias + '.html';
+    //    }
+    //}
+    return 'index.html';
+};
 
 module.exports.mainMenu = {
     item1: {
         title: 'Home',
-        path:  'index.html'
+        route:  'index.html'
     },
     item2: {
-        title: 'About',
-        path:  '#about'
+        title: 'Persons',
+        route:  'person_list'
     },
     item3: {
-        title: 'Contacts',
-        path:  '#contacts'
+        title: 'Person single',
+        route:  'person_show'
     },
     item4: {
         title: 'Contacts',
-        path:  '#contacts'
+        route:  '#contacts'
     }
 };

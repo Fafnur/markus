@@ -9,8 +9,8 @@ var gulp = require('gulp'),
     chokidar   = require('chokidar'),
     conf = require('../config'),
     loader = require('./loader'),
-    ctlsMap = [],
-    ctlsCount = 0
+    ctrlsMap = [],
+    ctrlsCount = 0
     ;
 
 var $ = require('gulp-load-plugins')({
@@ -57,15 +57,15 @@ gulp.task('compile:generate-ctrl-map', function() {
             for (var item in ctrl) {
                 if(ctrl.hasOwnProperty(item)) {
                     var action = ctrl[item];
-                    ctlsMap[ctlsCount] = {
-                        id: ctlsCount,
+                    ctrlsMap[ctrlsCount] = {
+                        id: ctrlsCount,
                         ctrl: name,
                         tpl: conf.markup.views + '/' + action.template,
-                        action: action,
+                        action: item,
                         alias: action.alias,
                         models: getModels(action.models)
                     };
-                    ctlsCount++;
+                    ctrlsCount++;
                 }
             }
         }));
@@ -73,17 +73,27 @@ gulp.task('compile:generate-ctrl-map', function() {
 
 // Compile Swig
 gulp.task('compile:twig', function() {
-    for(var key in ctlsMap) {
-        if(ctlsMap.hasOwnProperty(key)) {
-            var ctrl = ctlsMap[key];
-            var data = 'all.js';
 
+    function merge_options(objs){
+        var ret = {};
+        for (var key in objs) {
+            var obj = objs[key];
+            for (var attr in obj) {
+                ret[attr] = obj[attr];
+            }
+        }
+        return ret;
+    }
+
+    for(var key in ctrlsMap) {
+        if(ctrlsMap.hasOwnProperty(key)) {
+            var ctrl = ctrlsMap[key];
             // TODO: тут должна быть синхронная загрузка и компиляция шаблона
             //if(!conf.swig.useGlobalData) {
             //    //data = ctrl.ctrl + '_' + ctrl.action + '_all.js';
             //    console.log(ctrl.models);
             //    gulp.src(ctrl.models)
-            //        .pipe($.concat(data))
+            //        .pipe($.concat('all.js'))
             //        .pipe(gulp.dest(conf.markup.models));
             //}
 
@@ -97,7 +107,22 @@ gulp.task('compile:twig', function() {
                     defaults: {
                         loader: loader(),
                         cache: false,
-                        locals: $.requireWithoutCache(conf.root + path.sep + conf.markup.models.replace('\/',path.sep) + path.sep + data, require)
+                        locals: merge_options([
+                            $.requireWithoutCache(conf.root + path.sep + conf.markup.models.replace('\/',path.sep) + path.sep + 'all.js', require),
+                            {'ctrlsMap':ctrlsMap},
+                            {'path':function(param, arg){
+                                for(var key in ctrlsMap) {
+                                    if(ctrlsMap.hasOwnProperty(key)){
+                                        var ctrl = ctrlsMap[key];
+                                        var route = ctrl.ctrl + '_' + ctrl.action;
+                                        if(route == param) {
+                                            return ctrl.alias + '.html';
+                                        }
+                                    }
+                                }
+                                return 'index.html';
+                            }}
+                        ])
                     }
                 }))
                 .pipe($.rename(ctrl.alias + '.html'))
