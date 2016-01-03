@@ -1,5 +1,4 @@
 'use strict';
-
 var gutil = require('gulp-util');
 
 exports.root = process.env.INIT_CWD;
@@ -10,6 +9,7 @@ exports.root = process.env.INIT_CWD;
 var htdocs = {
     root:   'web',
     css:    'web/css',
+    less:   'web/less',
     js:     'web/js',
     images: 'web/images'
 };
@@ -52,17 +52,17 @@ exports.swig  = swig;
 var preCSS = {
     name: 'less',
     src: [
-        htdocs.root + '/less/vars/variables.less',
-        htdocs.root + '/less/vars/mixin.less',
-        htdocs.root + '/less/common/*.less',
-        htdocs.root + '/less/libs/**/*.less',
-        htdocs.root + '/less/libs/**/*.css',
-        htdocs.root + '/less/snippets/**/*.less',
-        htdocs.root + '/less/modules/**/*.less',
-        htdocs.root + '/less/modules/**/**/*.less',
-        htdocs.root + '/less/components/**/*.less'
+        htdocs.less + '/vars/variables.less',
+        htdocs.less + '/vars/mixin.less',
+        htdocs.less + '/common/*.less',
+        htdocs.less + '/libs/**/*.less',
+        htdocs.less + '/libs/**/*.css',
+        htdocs.less + '/snippets/**/*.less',
+        htdocs.less + '/modules/**/*.less',
+        htdocs.less + '/modules/**/**/*.less',
+        htdocs.less + '/components/**/*.less'
     ],
-    modules:      '/less/components/**/*.less',
+    modules:      htdocs.less + '/components/**/*.less',
     in:           'template.less',
     out:          'template.css',
     outMin:       'template.min.css',
@@ -73,31 +73,9 @@ exports.preCSS = preCSS;
 /**
  * Custom system templates for web-app
  */
-exports.markupTemplates = [
-    htdocs + '/components/markup-templates/templates'
+exports.templates = [
+    htdocs.root + '/components/markup-templates/templates'
 ];
-
-/**
- * List watchers for web-app
- */
-exports.watchers = {
-    preprocessor: {
-        path: preCSS.src,
-        task: preCSS.task
-    },
-    models: {
-        path: mvc.model,
-        task: mvc.task
-    },
-    controllers: {
-        path: mvc.ctrls,
-        task: mvc.task
-    },
-    views: {
-        path: mvc.views,
-        task: mvc.task
-    }
-};
 
 /**
  *  Common implementation for an error handler of a Gulp plugin

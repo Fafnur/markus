@@ -13,7 +13,7 @@ var $ = require('gulp-load-plugins')({
 });
 
 gulp.task('compile:clean:css', function() {
-    return gulp.src(conf.markup.root + '/css/' + conf.preCSS.out)
+    return gulp.src(conf.htdocs.css + '/' + conf.preCSS.out)
         .pipe($.vinylPaths($.del));
 });
 
@@ -28,15 +28,13 @@ gulp.task('compile:less', function () {
         .pipe($.rename(conf.preCSS.out))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
         .pipe(gulp.dest(conf.htdocs.css))
-        .pipe($.browserSync.reload({stream: true}))
-        ;
+        .pipe($.browserSync.reload({stream: true}));
 });
 
 gulp.task('compile:less:bootstrap', function () {
-    return gulp.src(conf.htdocs.root + '/less/bootstrap/bootstrap.less' )
+    return gulp.src(conf.htdocs.less + '/bootstrap/bootstrap.less' )
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
         .pipe($.less())
-        //.pipe(prefix('Last 15 version'))
         .pipe($.minifyCss())
         .pipe($.rename('bootstrap.min.css'))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
