@@ -62,7 +62,7 @@ var preCSS = {
         htdocs.less + '/modules/**/**/*.less',
         htdocs.less + '/components/**/*.less'
     ],
-    modules:      htdocs.less + '/components/**/*.less',
+    modules:      htdocs.less + '/modules',
     in:           'template.less',
     out:          'template.css',
     outMin:       'template.min.css',

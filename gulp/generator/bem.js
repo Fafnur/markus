@@ -1,50 +1,56 @@
-//// BEM less
-//gulp.task('bem', function () {
-//    var block     = args.b,
-//        elements  = args.e,
-//        modifiers = args.m,
-//        page      = args.page,
-//        path      = args.path || block,
-//        filename  = block + '.less',
-//        less      = '.' + block + ' {\n',
-//        html      = '\n<div class="' + block + '">\n',
-//        i;
-//
-//    if(!page) {
-//        page = 'index';
-//        if(src.tplSuffix) {
-//            page = page + '.html';
-//        }
-//    }
-//
-//    if(elements) {
-//        elements  = elements.split(',');
-//    } else {
-//        elements = [];
-//    }
-//
-//    if(modifiers) {
-//        modifiers  = modifiers.split(',');
-//    } else {
-//        modifiers = [];
-//    }
-//
-//    try {
-//        for(i = 0; i < elements.length; i++) {
-//            less = less  + '    &__' + elements[i] + ' {}\n';
-//            html = html + '    <div class="' + block + '__' + elements[i] + '"></div>\n';
-//        }
-//        for(i = 0; i < modifiers.length; i++) {
-//            less = less + '    &_' + modifiers[i] + ' {}\n';
-//        }
-//        less = less + '}';
-//        html = html + '</div>';
-//
-//        file(filename, less, { src: true })
-//            .pipe(gulp.dest(src.modules + '/' + path));
-//
-//        fs.appendFile( markup + '/pages/' + page + '.twig', html);
-//    } catch (e) {
-//        console.log(e);
-//    }
-//});
+'use strict';
+/**
+ * Compile LESS files
+ */
+var gulp = require('gulp'),
+    gutil = require('gulp-util'),
+    path = require('path'),
+    fs   = require('fs'),
+    args = require('yargs').argv,
+    conf = require('../config');
+
+var $ = require('gulp-load-plugins')({
+    pattern: ['gulp-*', 'del','vinyl-paths','imagemin-pngquant']
+});
+
+// BEM less
+gulp.task('bem', function () {
+    var block     = args.b || null,
+        elements  = args.e || null,
+        modifiers = args.m || null,
+        //page      = args.page || 'index',
+        path      = args.path || block,
+        less,
+        html;
+
+    elements  = elements ? elements.replace(/\s+/g, '').split(',') : [];
+    modifiers  = modifiers ? modifiers.replace(/\s+/g, '').split(',') : [];
+
+    try {
+        less = '.' + block + ' {\n';
+        html = '\n<div class="' + block + '">\n';
+
+        for(var element in elements) {
+            if(elements.hasOwnProperty(element)) {
+                less = less  + '    &__' + elements[element] + ' {}\n';
+                html = html + '    <div class="' + block + '__' + elements[element] + '"></div>\n';
+            }
+        }
+        for(var modifier in modifiers) {
+            if(modifiers.hasOwnProperty(modifier)) {
+                less = less + '    &_' + modifiers[modifier] + ' {}\n';
+            }
+        }
+        less = less + '}';
+        html = html + '</div>';
+
+        if( !fs.existsSync(conf.htdocs.less + '/modules/' + path)) {
+            fs.mkdirSync(conf.htdocs.less + '/modules/' + path);
+        }
+        fs.writeFile(conf.htdocs.less + '/modules/' + path + '/' + block + '.less');
+        fs.appendFile( conf.markup.views + '/default/index.html.twig', html);
+
+    } catch (e) {
+        console.log(e);
+    }
+});
