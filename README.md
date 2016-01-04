@@ -146,6 +146,25 @@ Gulp - содержит все task'и и watcher'ы сборки. Все зад
 
 Все выше перечисленные задачи подключаются в главном gulp файле - `gulpfile.js`, который находится в корне проекта.
 
+
+Генераторы:
+------------
+
+Реализована таска `gulp entity`, которая генерирует контролер, модель и представление для сущности.
+
+```shell
+gulp entity --e test,res,fd --a list,show,create,edit --m id,title,body
+```
+
+Аттрибуты:
+
+--е - список сущностей, через зяаятую
+
+--a - список экшенов (необязательный параметр, по умолчанию принимает: list,show )
+
+--m - список свойств сущности (необязательный параметр, по умолчанию принимает: id,name )
+
+
 [markup-swig]: https://github.com/Fafnur/markup-swig
 [Model-View-Controller]: https://ru.wikipedia.org/wiki/Model-View-Controller
 [SwigJS]: http://paularmstrong.github.io/swig/
