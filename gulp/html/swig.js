@@ -18,7 +18,7 @@ var $ = require('gulp-load-plugins')({
 });
 
 gulp.task('compile:clean:html', function() {
-    return gulp.src(conf.markup.root + '/*.html')
+    return gulp.src(conf.htdocs.root + '/*.html')
         .pipe($.vinylPaths($.del));
 });
 
