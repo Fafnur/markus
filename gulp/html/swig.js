@@ -57,7 +57,7 @@ gulp.task('compile:generate-ctrl-map', function() {
             function isActive(action) {
                 var ret = true;
                 if(action == false) {
-                    var ret = false;
+                    ret = false;
                 }
                 return ret;
             }
