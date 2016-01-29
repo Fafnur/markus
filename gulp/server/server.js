@@ -16,6 +16,7 @@ var $ = require('gulp-load-plugins')({
 
 gulp.task('browser-sync', ['compile:watch:less', 'compile:watch:twig'], function() {
     browserSync({
+        logFileChanges: false,
         server: 'web',
         files: ['web/css/*.css', 'web/js/*.js', 'web/*.html']
     });

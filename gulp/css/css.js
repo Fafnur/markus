@@ -20,7 +20,7 @@ gulp.task('compress:css:clean', function() {
 gulp.task('compress:css', ['compress:css:clean'], function () {
     return gulp.src(conf.htdocs.css + '/' + conf.preCSS.out)
         .pipe($.autoprefixer())
-        .pipe($.minifyCss())
+        .pipe($.cssnano())
         .pipe($.rename(conf.preCSS.outMin))
         .pipe(gulp.dest(conf.htdocs.css));
 });

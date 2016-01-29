@@ -1,14 +1,4 @@
 module.exports.asset = function (param) { return '/' + param; };
-module.exports.path  = function (param) {
-    if(ctlsMap.hasOwnProperty(key)) {
-        var ctrl = ctlsMap[key];
-        var route = ctrl.ctrl + '_' + ctrl.alias;
-        if(route == param) {
-            return ctrl.alias + '.html';
-        }
-    }
-    return 'index.html';
-};
 
 module.exports.mainMenu = {
     item1: {
