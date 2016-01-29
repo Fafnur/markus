@@ -67,6 +67,7 @@ gulp.task('compile:generate-ctrl-map', ['compile:clean:html'], function() {
                     ctrlsMap[ctrlsCount] = {
                         id: ctrlsCount,
                         ctrl: name,
+                        name: action.name,
                         tpl: conf.markup.views + '/' + action.template,
                         action: item,
                         alias: action.alias,
@@ -126,7 +127,7 @@ gulp.task('compile:twig', function() {
                                     if(ctrlsMap.hasOwnProperty(key)){
                                         var ctrl = ctrlsMap[key];
                                         var route = ctrl.ctrl + '_' + ctrl.action;
-                                        if(route == param) {
+                                        if(route == param || ctrl.name == param) {
                                             return ctrl.alias + '.html';
                                         }
                                     }

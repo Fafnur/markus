@@ -3,7 +3,7 @@ module.exports.asset = function (param) { return '/' + param; };
 module.exports.mainMenu = {
     item1: {
         title: 'Home',
-        route:  'index.html'
+        route:  'homepage'
     },
     item2: {
         title: 'Persons',
