@@ -184,8 +184,6 @@ gulp.task('compile:watch:twig', function() {
     }).on('all', function (event, path) {
         gulp.start('compile:rebuild:ctrls');
     });
-    
-    console.log('!./' + conf.markup.models + '/all.js');
 
     chokidar.watch([conf.mvc.models, '!' + conf.markup.models + '/all.js' ], {
         ignored: 'all.js',
