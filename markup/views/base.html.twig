@@ -43,68 +43,65 @@
 <body>
 {% block body %}
 
-{% block browserupgrade %}
-    <!--[if lt IE 8]>
-    <p class="browserupgrade">Вы используете <strong>старый</strong> браузер. Пожалуйства
-        <a href="http://browsehappy.com/">обновите свой браузер</a>.</p>
-    <![endif]-->
-{% endblock %}
+    {% block browserupgrade %}
+        <!--[if lt IE 8]>
+        <p class="browserupgrade">Вы используете <strong>старый</strong> браузер. Пожалуйства
+            <a href="http://browsehappy.com/">обновите свой браузер</a>.</p>
+        <![endif]-->
+    {% endblock %}
 
-{% block page_wrapper %}
-    <div class="page-wrapper">
-        <div class="page-buffer ">
-
-            {% include 'common/navbar.html.twig' %}
-
-            {% block header %}
-                <header class="header">
-                    <div class="container">
-                        <a href="index.html" class="logo">Тут мог быть ваш логотип</a>
+    {% block page_wrapper %}
+        <div class="page-wrapper">
+            <div class="page-buffer ">
+                {% include 'common/navbar.html.twig' %}
+                {% block header %}
+                    <header class="header">
+                        <div class="container">
+                            <a href="index.html" class="logo">Тут мог быть ваш логотип</a>
+                        </div>
+                    </header>
+                {% endblock %}
+                {% block top_bar %}{% endblock %}
+                {% block content_wrapper %}
+                    <div class="content-wr">
+                        {% block content_top %}{% endblock %}
+                        {% block content %}{% endblock %}
+                        {% block content_bottom %}{% endblock %}
                     </div>
-                </header>
-            {% endblock %}
-
-            {% block top_bar %} {% endblock %}
-
-            {% block content_wrapper %}
-                <div class="content-wr">
-                    {% block content_top %}{% endblock %}
-                    {% block content %}{% endblock %}
-                    {% block content_bottom %}{% endblock %}
-                </div>
-            {% endblock %}
-
-            {% block bottom_bar %} {% endblock %}
-        </div>
-    </div>
-{% endblock %}
-
-{% block page_footer %}
-    <footer class="page-footer">
-
-        {% block footer %}
-            <div class="footer">
-                <div class="container">
-                    Футер прижатый к низу.
-                </div>
+                {% endblock %}
+                {% block bottom_bar %}{% endblock %}
             </div>
-        {% endblock %}
+        </div>
+    {% endblock %}
 
-    </footer>
-{% endblock %}
+    {% block page_footer %}
+        <footer class="page-footer">
 
-{% block modals_all %}
-    {% block modals %}{% endblock %}
-{% endblock %}
+            {% block footer %}
+                <div class="footer">
+                    <div class="container">
+                        Футер прижатый к низу.
+                    </div>
+                </div>
+            {% endblock %}
 
-{% block javascript_all %}
-    {#<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>#}
-    {#<script>window.jQuery || document.write("<script src=\"{{ asset('components/jquery/dist/jquery.min.js') }}\"><\/script>")</script>#}
-    <script src="{{ asset('components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/plugins.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
-    {% block javascripts %}{% endblock %}
+        </footer>
+    {% endblock %}
+
+    {% block modals_all %}
+        {% block modals %}{% endblock %}
+    {% endblock %}
+
+    {% block javascript_all %}
+        {#<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>#}
+        {#<script>window.jQuery || document.write("<script src=\"{{ asset('components/jquery/dist/jquery.min.js') }}\"><\/script>")</script>#}
+        <script src="{{ asset('components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/plugins.js') }}"></script>
+        <script src="{{ asset('js/main.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    {% endblock %}
+
 {% endblock %}
 </body>
 </html>

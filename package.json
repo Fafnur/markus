@@ -57,6 +57,7 @@
     "js-yaml": "^3.4.6",
     "jshint-stylish": "^2.1.0",
     "require-without-cache": "0.0.6",
+    "run-sequence": "^1.1.5",
     "vinyl-paths": "^2.1.0",
     "wrench": "^1.5.8",
     "yargs": "^3.31.0"

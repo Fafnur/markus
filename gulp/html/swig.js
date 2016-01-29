@@ -14,26 +14,26 @@ var gulp = require('gulp'),
     ;
 
 var $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*','browser-sync','plumber','notify', 'require-without-cache', 'del','vinyl-paths']
+    pattern: ['gulp-*','browser-sync','plumber','notify', 'require-without-cache', 'run-sequence']
 });
 
 gulp.task('compile:clean:html', function() {
     return gulp.src(conf.htdocs.root + '/*.html')
-        .pipe($.vinylPaths($.del));
+        .pipe($.rimraf());
 });
 
 gulp.task('compile:models:del', function () {
     return gulp.src( conf.markup.models + '/all.js')
-        .pipe($.vinylPaths($.del))
+        .pipe($.rimraf())
 });
 
-gulp.task('compile:models:all',['compile:models:del'], function() {
+gulp.task('compile:models:all', ['compile:models:del'], function() {
     return gulp.src(conf.mvc.models)
         .pipe($.concat('all.js'))
         .pipe(gulp.dest(conf.markup.models));
 });
 
-gulp.task('compile:generate-ctrl-map', function() {
+gulp.task('compile:generate-ctrl-map', ['compile:clean:html'], function() {
     var getModels = function(models) {
         var listModels = [];
         var modelsPath = conf.markup.models + '/';
@@ -144,19 +144,29 @@ gulp.task('compile:twig', function() {
     $.browserSync.reload({stream:true});
 });
 
-gulp.task('compile:build:twig', ['compile:clean:html', 'compile:models:all','compile:generate-ctrl-map'], function() {
-    gulp.start('compile:twig');
+gulp.task('compile:rebuild:ctrls', function(cb) {
+    $.runSequence(
+        'compile:generate-ctrl-map',
+        'compile:twig',
+        cb
+    );
 });
-
-gulp.task('compile:rebuild:ctrls', ['compile:generate-ctrl-map'], function() {
-    gulp.start('compile:twig');
+gulp.task('compile:rebuild:models', function(cb) {
+    $.runSequence(
+        'compile:models:del',
+        'compile:models:all',
+        'compile:twig',
+        cb
+    );
 });
-
-gulp.task('compile:rebuild:models', ['compile:models:all'], function() {
-    gulp.start('compile:twig');
+gulp.task('compile:build:twig', function(cb) {
+    $.runSequence(
+        ['compile:models:all', 'compile:generate-ctrl-map'],
+        'compile:twig',
+        cb
+    );
 });
-
-gulp.task('compile:watch:twig', ['compile:clean:html'], function() {
+gulp.task('compile:watch:twig', function() {
     gulp.start('compile:build:twig');
 
     chokidar.watch(conf.mvc.views, {
@@ -174,8 +184,10 @@ gulp.task('compile:watch:twig', ['compile:clean:html'], function() {
     }).on('all', function (event, path) {
         gulp.start('compile:rebuild:ctrls');
     });
+    
+    console.log('!./' + conf.markup.models + '/all.js');
 
-    chokidar.watch(conf.mvc.models, {
+    chokidar.watch([conf.mvc.models, '!' + conf.markup.models + '/all.js' ], {
         ignored: 'all.js',
         persistent: true,
         ignoreInitial: true
