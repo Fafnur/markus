@@ -1,11 +1,12 @@
 module.exports.asset = function (param) { return '/' + param; };
 module.exports.path  = function (param) {
-    //for(var ctrl in ctlsMap) {
-    //    var route = ctrl.ctrl + '_' + ctrl.alias;
-    //    if(route == param) {
-    //        return ctrl.alias + '.html';
-    //    }
-    //}
+    if(ctlsMap.hasOwnProperty(key)) {
+        var ctrl = ctlsMap[key];
+        var route = ctrl.ctrl + '_' + ctrl.alias;
+        if(route == param) {
+            return ctrl.alias + '.html';
+        }
+    }
     return 'index.html';
 };
 
