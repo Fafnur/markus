@@ -21,3 +21,5 @@ gulp.task('browser-sync', ['compile:watch:less', 'compile:watch:twig'], function
         files: ['web/css/*.css', 'web/js/*.js', 'web/*.html']
     });
 });
+
+gulp.task('watch', ['browser-sync', 'compile:watch:less', 'compile:watch:twig']);
