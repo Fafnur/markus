@@ -31,7 +31,7 @@ gulp.task('compile:less', function () {
         .pipe($.browserSync.reload({stream: true}));
 });
 
-gulp.task('compile:build:twig', ['compile:less']);
+gulp.task('compile:build:less', ['compile:less']);
 
 gulp.task('compile:less:bootstrap', function () {
     return gulp.src(conf.htdocs.less + '/bootstrap/bootstrap.less' )
