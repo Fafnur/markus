@@ -8,15 +8,15 @@ var gulp = require('gulp'),
     conf = require('../config');
 
 var $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*', 'del','vinyl-paths','imagemin-pngquant']
+    pattern: ['gulp-*','imagemin-pngquant']
 });
 
-gulp.task('compress:images:clean', function() {
+gulp.task('clean:images', function() {
     return gulp.src(conf.htdocs.root + '/compress-images')
-        .pipe($.vinylPaths($.del));
+        .pipe($.rimraf());
 });
 
-gulp.task('compress:images', ['compress:images:clean'], function () {
+gulp.task('compress:images', ['clean:images'], function () {
     console.log(conf.htdocs.images);
     return gulp.src(conf.htdocs.images + '/**/*')
         .pipe($.imagemin({

@@ -9,35 +9,33 @@ var gulp = require('gulp'),
     conf = require('../config');
 
 var $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*', 'sourcemaps', 'browser-sync', 'notify', 'del','vinyl-paths']
+    pattern: ['gulp-*', 'sourcemaps', 'browser-sync', 'notify', 'run-sequence']
 });
 
-gulp.task('compile:clean:css', function() {
+gulp.task('clean:less', function() {
     return gulp.src(conf.htdocs.css + '/' + conf.preCSS.out)
-        .pipe($.vinylPaths($.del));
+        .pipe($.rimraf());
 });
 
-gulp.task('compile:less', function () {
+gulp.task('less', function () {
     return gulp.src(conf.preCSS.src)
         .pipe($.concat(conf.preCSS.in))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
         .pipe($.less())
-        .on('error', $.notify.onError(function (error) {
-            return '\nError! Look in the console for details.\n' + error;
-        }))
         .pipe($.rename(conf.preCSS.out))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
         .pipe(gulp.dest(conf.htdocs.css))
-        .pipe($.browserSync.reload({stream: true}));
+        .pipe($.browserSync.reload({stream: true}))
+        .on('error', $.notify.onError(function (error) {
+            return '\nError! Look in the console for details.\n' + error;
+        }));
 });
 
-gulp.task('compile:build:less', ['compile:less']);
-
-gulp.task('compile:less:bootstrap', function () {
+gulp.task('build:bootstrap', function () {
     return gulp.src(conf.htdocs.less + '/bootstrap/bootstrap.less' )
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
         .pipe($.less())
-        .pipe($.minifyCss())
+        .pipe($.cssnano())
         .pipe($.rename('bootstrap.min.css'))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
         .pipe(gulp.dest(conf.htdocs.css))
@@ -46,9 +44,15 @@ gulp.task('compile:less:bootstrap', function () {
         }));
 });
 
-gulp.task('compile:watch:less', ['compile:clean:css'], function() {
-    gulp.start('compile:less');
+gulp.task('build:less', function(cb) {
+    $.runSequence(
+        'clean:less',
+        'less',
+        cb
+    );
+});
 
+gulp.task('watch:less', ['less'], function() {
     chokidar.watch(conf.preCSS.src, {
         ignored: '',
         persistent: true,

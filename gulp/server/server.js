@@ -14,12 +14,15 @@ var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'notify']
 });
 
-gulp.task('browser-sync', ['compile:watch:less', 'compile:watch:twig'], function() {
+gulp.task('serve', ['build:less', 'build:twig'], function() {
+ 
     browserSync({
         logFileChanges: false,
         server: 'web',
         files: ['web/css/*.css', 'web/js/*.js', 'web/*.html']
     });
+    gulp.start('watch:twig');
+    gulp.start('watch:less');
 });
 
-gulp.task('watch', ['browser-sync', 'compile:watch:less', 'compile:watch:twig']);
+gulp.task('build', ['build:less', 'build:twig']);

@@ -14,26 +14,26 @@ var gulp = require('gulp'),
     ;
 
 var $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*','browser-sync','plumber','notify', 'require-without-cache', 'run-sequence']
+    pattern: ['gulp-*','browser-sync', 'plumber','notify', 'require-without-cache', 'run-sequence']
 });
 
-gulp.task('compile:clean:html', function() {
+gulp.task('clean:html', function() {
     return gulp.src(conf.htdocs.root + '/*.html')
         .pipe($.rimraf());
 });
 
-gulp.task('compile:models:del', function () {
+gulp.task('clean:models', function () {
     return gulp.src( conf.markup.models + '/all.js')
         .pipe($.rimraf())
 });
 
-gulp.task('compile:models:all', ['compile:models:del'], function() {
+gulp.task('build:models', ['clean:models'], function() {
     return gulp.src(conf.mvc.models)
         .pipe($.concat('all.js'))
         .pipe(gulp.dest(conf.markup.models));
 });
 
-gulp.task('compile:generate-ctrl-map', ['compile:clean:html'], function() {
+gulp.task('generate:ctrl-map', function() {
     var getModels = function(models) {
         var listModels = [];
         var modelsPath = conf.markup.models + '/';
@@ -79,9 +79,8 @@ gulp.task('compile:generate-ctrl-map', ['compile:clean:html'], function() {
             }
         }));
 });
-
-// Compile Swig
-gulp.task('compile:twig', function() {
+ 
+gulp.task('twig', function() {
 
     function merge_options(objs){
         var ret = {};
@@ -145,52 +144,55 @@ gulp.task('compile:twig', function() {
     $.browserSync.reload({stream:true});
 });
 
-gulp.task('compile:rebuild:ctrls', function(cb) {
+gulp.task('rebuild:ctrl', function(cb) {
     $.runSequence(
-        'compile:generate-ctrl-map',
-        'compile:twig',
+        'clean:html',
+        'generate:ctrl-map',
+        'twig',
         cb
     );
 });
-gulp.task('compile:rebuild:models', function(cb) {
+gulp.task('rebuild:models', function(cb) {
     $.runSequence(
-        'compile:models:del',
-        'compile:models:all',
-        'compile:twig',
+        'build:models',
+        'twig',
         cb
     );
 });
-gulp.task('compile:build:twig', function(cb) {
+gulp.task('build:twig', function(cb) {
     $.runSequence(
-        ['compile:models:all', 'compile:generate-ctrl-map'],
-        'compile:twig',
+        ['build:models', 'generate:ctrl-map'],
+        'twig',
         cb
     );
 });
-gulp.task('compile:watch:twig', function() {
-    gulp.start('compile:build:twig');
 
+gulp.task('watch:twig', ['build:twig'], function() {
+    
     chokidar.watch(conf.mvc.views, {
         ignored: '',
         persistent: true,
         ignoreInitial: true
-    }).on('all', function (event, path) {
-        gulp.start('compile:twig');
+    }).on('change', function (event, path) {
+        gulp.start('twig');
     });
 
     chokidar.watch(conf.mvc.ctrls, {
         ignored: '',
         persistent: true,
         ignoreInitial: true
-    }).on('all', function (event, path) {
-        gulp.start('compile:rebuild:ctrls');
+    }).on('change', function (event, path) {
+        gulp.start('rebuild:ctrl');
     });
 
-    chokidar.watch([conf.mvc.models, '!' + conf.markup.models + '/all.js' ], {
+    chokidar.watch([
+        conf.mvc.models, 
+        '!' + conf.markup.models + '/all.js' 
+    ], {
         ignored: 'all.js',
         persistent: true,
         ignoreInitial: true
-    }).on('all', function (event, path) {
-        gulp.start('compile:rebuild:models');
+    }).on('change', function (event, path) {
+        gulp.start('rebuild:models');
     });
 });
