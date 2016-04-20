@@ -57,7 +57,7 @@ gulp.task('watch:less', ['less'], function() {
         ignored: '',
         persistent: true,
         ignoreInitial: true
-    }).on('all', function (event, path) {
-        gulp.start('compile:less');
+    }).on('change', function (event, path) {
+        gulp.start('less');
     });
 });
