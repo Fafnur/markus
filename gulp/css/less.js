@@ -9,7 +9,7 @@ var gulp = require('gulp'),
     conf = require('../config');
 
 var $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*', 'sourcemaps', 'browser-sync', 'notify', 'run-sequence']
+    pattern: ['gulp-*', 'sourcemaps', 'browser-sync', 'notify', 'run-sequence', 'plumber']
 });
 
 gulp.task('clean:less', function() {
@@ -19,6 +19,11 @@ gulp.task('clean:less', function() {
 
 gulp.task('less', function () {
     return gulp.src(conf.preCSS.src)
+        .pipe($.plumber({
+            errorHandler: function (error) {
+                console.log('\nError in less compile\n'  + error);
+            }
+        }))
         .pipe($.concat(conf.preCSS.in))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
         .pipe($.less())
@@ -26,9 +31,7 @@ gulp.task('less', function () {
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
         .pipe(gulp.dest(conf.htdocs.css))
         .pipe($.browserSync.reload({stream: true}))
-        .on('error', $.notify.onError(function (error) {
-            return '\nError! Look in the console for details.\n' + error;
-        }));
+        ;
 });
 
 gulp.task('build:bootstrap', function () {
@@ -57,7 +60,7 @@ gulp.task('watch:less', ['less'], function() {
         ignored: '',
         persistent: true,
         ignoreInitial: true
-    }).on('change', function (event, path) {
+    }).on('all', function (event, path) {
         gulp.start('less');
     });
 });
