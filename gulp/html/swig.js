@@ -109,11 +109,6 @@ gulp.task('twig', function() {
             //}
 
             gulp.src(ctrl.tpl)
-                .pipe($.plumber({
-                    errorHandler: function (error) {
-                        console.log('\nError in twig file:' + ctrl.tpl + '\n'  + error);
-                    }
-                }))
                 .pipe($.swig({
                     defaults: {
                         loader: loader(),
@@ -134,6 +129,11 @@ gulp.task('twig', function() {
                                 return 'index.html';
                             }}
                         ])
+                    }
+                }))
+                .pipe($.plumber({
+                    errorHandler: function (error) {
+                        console.log('\nError in twig file:' + ctrl.tpl + '\n'  + error);
                     }
                 }))
                 .pipe($.rename(ctrl.alias + '.html'))

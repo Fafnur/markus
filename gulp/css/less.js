@@ -19,14 +19,14 @@ gulp.task('clean:less', function() {
 
 gulp.task('less', function () {
     return gulp.src(conf.preCSS.src)
+        .pipe($.concat(conf.preCSS.in))
+        .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
+        .pipe($.less())
         .pipe($.plumber({
             errorHandler: function (error) {
                 console.log('\nError in less compile\n'  + error);
             }
         }))
-        .pipe($.concat(conf.preCSS.in))
-        .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
-        .pipe($.less())
         .pipe($.rename(conf.preCSS.out))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
         .pipe(gulp.dest(conf.htdocs.css))
