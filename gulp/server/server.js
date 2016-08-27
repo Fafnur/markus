@@ -18,7 +18,8 @@ gulp.task('serve', ['build:less', 'build:twig'], function() {
     browserSync({
         logFileChanges: false,
         server: 'web',
-        files: ['web/css/*.css', 'web/js/*.js', 'web/*.html']
+        files: ['web/css/*.css', 'web/js/*.js', 'web/*.html'],
+        open: conf.browserAutoOpen
     });
     gulp.start('watch:twig');
     gulp.start('watch:less');

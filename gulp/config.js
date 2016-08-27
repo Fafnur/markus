@@ -46,6 +46,8 @@ var swig = {
 };
 exports.swig  = swig;
 
+exports.browserAutoOpen = false;
+
 /**
  * Preprocessor css
  */
