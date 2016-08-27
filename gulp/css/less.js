@@ -21,12 +21,9 @@ gulp.task('less', function () {
     return gulp.src(conf.preCSS.src)
         .pipe($.concat(conf.preCSS.in))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
-        .pipe($.less())
-        .pipe($.plumber({
-            errorHandler: function (error) {
-                console.log('\nError in less compile\n'  + error);
-            }
-        }))
+        .pipe($.less().on('error', $.notify.onError(function (error) {
+            return '\nError compile:' + '\n' + error;
+        })))
         .pipe($.rename(conf.preCSS.out))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
         .pipe(gulp.dest(conf.htdocs.css))
@@ -37,14 +34,13 @@ gulp.task('less', function () {
 gulp.task('build:bootstrap', function () {
     return gulp.src(conf.htdocs.less + '/bootstrap/bootstrap.less' )
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.init()))
-        .pipe($.less())
+        .pipe($.less().on('error', $.notify.onError(function (error) {
+            return '\nError compile: ' + conf.htdocs.root + '/less/bootstrap/bootstrap.less' + '\n' + error;
+        })))
         .pipe($.cssnano())
         .pipe($.rename('bootstrap.min.css'))
         .pipe($.if(conf.preCSS.isSourcemaps, $.sourcemaps.write()))
-        .pipe(gulp.dest(conf.htdocs.css))
-        .on('error', $.notify.onError(function (error) {
-            return '\nError compile: ' + conf.htdocs.root + '/less/bootstrap/bootstrap.less' + '\n' + error;
-        }));
+        .pipe(gulp.dest(conf.htdocs.css));
 });
 
 gulp.task('build:less', function(cb) {
@@ -55,7 +51,7 @@ gulp.task('build:less', function(cb) {
     );
 });
 
-gulp.task('watch:less', ['less'], function() {
+gulp.task('watch:less', function() {
     chokidar.watch(conf.preCSS.src, {
         ignored: '',
         persistent: true,

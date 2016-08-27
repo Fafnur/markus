@@ -10,8 +10,7 @@ var gulp = require('gulp'),
     conf = require('../config'),
     loader = require('./loader'),
     ctrlsMap = [],
-    ctrlsCount = 0
-    ;
+    ctrlsCount = 0;
 
 var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*','browser-sync', 'plumber','notify', 'require-without-cache', 'run-sequence']
@@ -109,6 +108,7 @@ gulp.task('twig', function() {
             //}
 
             gulp.src(ctrl.tpl)
+                .pipe($.plumber())
                 .pipe($.swig({
                     defaults: {
                         loader: loader(),
@@ -130,12 +130,9 @@ gulp.task('twig', function() {
                             }}
                         ])
                     }
-                }))
-                .pipe($.plumber({
-                    errorHandler: function (error) {
-                        console.log('\nError in twig file:' + ctrl.tpl + '\n'  + error);
-                    }
-                }))
+                }).on('error', $.notify.onError(function (error) {
+                    return '\nError compile swig:' + '\n' + error;
+                })))
                 .pipe($.rename(ctrl.alias + '.html'))
                 .pipe(gulp.dest(conf.htdocs.root))
             ;
@@ -167,7 +164,7 @@ gulp.task('build:twig', function(cb) {
     );
 });
 
-gulp.task('watch:twig', ['build:twig'], function() {
+gulp.task('watch:twig', function() {
     
     chokidar.watch(conf.mvc.views, {
         ignored: '',

@@ -1,53 +1,12 @@
-// Bootstrap theme button
-.btn-create(@color: #ef554d, @background: #fff) {
-  color: @color;
-  background-color: @background;
-  border: 2px solid @color;
-  .border-radius(0px);
+@import "../bootstrap/mixins";
 
-  &:focus,
-  &.focus,
-  &:hover {
-    color: @background;
-    background-color: @color;
-    border-color: @color;
+// Static footer
+.static-footer(@h:100px) {
+  .page-buffer {
+    padding-bottom: @h;
   }
-  &:active,
-  &.active,
-  .open > .dropdown-toggle& {
-    color: @background;
-    background-color: @color;
-    border-color: @color;
-
-    &:hover,
-    &:focus,
-    &.focus {
-      color: @background;
-      background-color: @color;
-      border-color: @color;
-    }
-  }
-  &:active,
-  &.active,
-  .open > .dropdown-toggle& {
-    background-image: none;
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    &,
-    &:hover,
-    &:focus,
-    &.focus,
-    &:active,
-    &.active {
-      background-color: @background;
-      border-color: @color;
-    }
-  }
-
-  .badge {
-    color: @background;
-    background-color: @color;
+  .page-footer {
+    height: @h;
+    margin-top: -@h;
   }
 }

@@ -2,41 +2,30 @@
    LAYOUT STYLES
    ========================================================================== */
 
-.staticFooter(@h:100px) {
-  .page-buffer {
-    padding-bottom: @h;
-  }
-  .page-footer {
-    height: @h;
-    margin-top: -@h;
-  }
-}
-
 html, body {
   height: 100%;
+  width:  100%;
 }
 
-.page-footer {
+.page-wrapper {}
 
-}
+.page-footer {}
 
 @media (min-width: @screen-xs-min) {
-
 }
 
 @media (min-width: @screen-sm-min) {
   .page-wrapper {
     min-height: 100%;
   }
-  .staticFooter(40px);
+  .static-footer(40px);
 }
 
 // Adaptive footer
-
 //@media (min-width: @screen-md-min) {
-//  .staticFooter(365px);
+//  .static-footer(365px);
 //}
 //@media (min-width: @screen-lg-min) {
-//  .staticFooter(424px);
+//  .static-footer(424px);
 //}
 //
